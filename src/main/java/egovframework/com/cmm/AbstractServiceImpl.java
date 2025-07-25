@@ -10,7 +10,6 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import egovframework.com.cmm.service.EgovFileMngUtil;
-import egovframework.com.cmm.service.impl.KeyCodeDAO;
 import egovframework.let.utl.fcc.service.EgovStringUtil;
 
 public abstract class AbstractServiceImpl extends EgovAbstractServiceImpl {
@@ -20,8 +19,6 @@ public abstract class AbstractServiceImpl extends EgovAbstractServiceImpl {
 	
 	@Resource(name = "EgovFileMngUtil")
 	private EgovFileMngUtil egovFileMngUtil;
-	@Resource(name = "KeyCodeDAO")
-	private KeyCodeDAO keyCodeDAO;
 	
 	/**
 	 * 이미지 미리보기
@@ -48,6 +45,6 @@ public abstract class AbstractServiceImpl extends EgovAbstractServiceImpl {
 	 * 키코드 조회
 	 */
 	protected String getKeyCode() {
-		return keyCodeDAO.select();
+		return sqlSession.selectOne("KeyCodeMapper.select");
 	}
 }
