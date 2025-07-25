@@ -31,9 +31,6 @@ spring:
   devtools:
     restart:
       enabled: false
-  mvc:
-    pathmatch:
-      matching-strategy: ant_path_matcher
   servlet:
     multipart:
       enabled: true
@@ -54,18 +51,15 @@ spring:
   config:
     activate:
       on-profile: local
-    import: classpath:application-local.yml
 ---
 #dev
 spring:
   config:
     activate:
       on-profile: dev
-    import: classpath:application-dev.yml
 ---
 #prod
 spring:
   config:
     activate:
       on-profile: prod
-    import: classpath:application-prod.yml

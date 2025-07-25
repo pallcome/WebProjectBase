@@ -1,7 +1,6 @@
 #custom property
 file:
-  path: C:/fileupload/webProjectBase
-
+  path: F:/storage/upload/webProjectBase
 server:
   port: 8000
   servlet:

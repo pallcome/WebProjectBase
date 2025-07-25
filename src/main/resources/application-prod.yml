@@ -1,7 +1,6 @@
 #custom property
 file:
   path: C:/fileupload/webProjectBase
-
 spring:
   datasource:
     primary:

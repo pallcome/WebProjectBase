@@ -71,10 +71,7 @@ public class EgovConfigAppMapper {
 				.getResource("classpath:/egovframework/mapper/config/mapper-config.xml"));
 		try {
 			List<Resource> resources = new ArrayList<>();
-//			Collections.addAll(resources, pathMatchingResourcePatternResolver.getResources("classpath:/egovframework/mapper/**/*.xml"));
-			Collections.addAll(resources, pathMatchingResourcePatternResolver.getResources("classpath:/egovframework/mapper/app/**/*.xml"));
-			Collections.addAll(resources, pathMatchingResourcePatternResolver.getResources("classpath:/egovframework/mapper/com/**/*.xml"));
-			Collections.addAll(resources, pathMatchingResourcePatternResolver.getResources("classpath:/egovframework/mapper/let/**/*.xml"));
+			Collections.addAll(resources, pathMatchingResourcePatternResolver.getResources("classpath:/egovframework//**/domain/*.xml"));
 			
 			sqlSessionFactoryBean.setMapperLocations(resources.toArray(new Resource[0]));
 		} catch (IOException e) {
