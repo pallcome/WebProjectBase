@@ -3,7 +3,7 @@
 	<property name="LOG_PATH" value="${logging.file.path}" />
 	<property name="LOG_FILE_NAME" value="${logging.file.name}" />
 	<property name="LOG_PATTERN" value="%d{HH:mm} %-5level [%logger] %msg%n" />
-	<property name="LOG_LEVEL" value="${logging.root.level}" />
+	<property name="LOG_LEVEL" value="${logging.level.root}" />
 	<!-- SQL 전용 레벨: application.yml 에 logging.level.sql 로 지정 -->
 	<property name="SQL_LEVEL" value="${logging.level.sql}" />
 

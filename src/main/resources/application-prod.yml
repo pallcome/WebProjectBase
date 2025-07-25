@@ -1,3 +1,7 @@
+#custom property
+file:
+  path: C:/fileupload/webProjectBase
+
 spring:
   datasource:
     primary:
@@ -12,7 +16,8 @@ spring:
       #password: lca5534!138
 logging:
   file:
-    path: C:/logs/esight-new
+    path: C:/logs/webProjectBase
+    name: webLog
   logback:
     rollingpolicy:
       max-history: 30
