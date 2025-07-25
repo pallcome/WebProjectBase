@@ -2,11 +2,18 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="SampleMapper">
 	<select id="selectList" parameterType="map" resultType="map">
+		SELECT 1
+		UNION ALL
+		SELECT 1
 	</select>
 	<select id="select" parameterType="map" resultType="map">
+		SELECT 1
 	</select>
-	<insert id="merge" parameterType="map">
+	<insert id="insert" parameterType="map">
+	INSERT INTO TEST VALUES(NOW())
 	</insert>
+	<update id="update" parameterType="map">
+	</update>
 	<delete id="delete" parameterType="map">
 	</delete>
 </mapper>

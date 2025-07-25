@@ -55,7 +55,7 @@ public class EgovConfigAppAspect {
 	public DefaultExceptionHandleManager defaultExceptionHandleManager(ExceptionHandler egovHandler) {
 		DefaultExceptionHandleManager defaultExceptionHandleManager = new DefaultExceptionHandleManager();
 		defaultExceptionHandleManager.setReqExpMatcher(antPathMatcher);
-		defaultExceptionHandleManager.setPatterns(new String[] {"**service.impl.*"});
+		defaultExceptionHandleManager.setPatterns(new String[] {"**service.**"});
 		defaultExceptionHandleManager.setHandlers(new ExceptionHandler[] {egovHandler});
 		return defaultExceptionHandleManager;
 	}
@@ -64,7 +64,7 @@ public class EgovConfigAppAspect {
 	public DefaultExceptionHandleManager otherExceptionHandleManager() {
 		DefaultExceptionHandleManager defaultExceptionHandleManager = new DefaultExceptionHandleManager();
 		defaultExceptionHandleManager.setReqExpMatcher(antPathMatcher);
-		defaultExceptionHandleManager.setPatterns(new String[] {"**service.impl.*"});
+		defaultExceptionHandleManager.setPatterns(new String[] {"**service.**"});
 		defaultExceptionHandleManager.setHandlers(new ExceptionHandler[] {otherHandler()});
 		return defaultExceptionHandleManager;
 	}

@@ -85,8 +85,13 @@ public class EgovConfigAppTransaction {
 	@Bean
 	public Advisor txAdvisor(DataSourceTransactionManager txManager) {
 		AspectJExpressionPointcut pointcut = new AspectJExpressionPointcut();
-		pointcut.setExpression(
-			"execution(* egovframework.let..impl.*Impl.*(..)) or execution(* egovframework.com..*Impl.*(..))");
+//		pointcut.setExpression("execution(* egovframework.let..impl.*Impl.*(..)) or execution(* egovframework.com..*Impl.*(..))");
+//		pointcut.setExpression("execution(* egovframework.let..impl.*Impl.*(..))"
+//				+ " or execution(* egovframework.com..*Impl.*(..))"
+//				+ " or execution(* egovframework.app..*.*(..))"
+//		);
+		
+		pointcut.setExpression("execution(* egovframework..web.*.*(..)) or execution(* egovframework..service.*.*(..))");
 		return new DefaultPointcutAdvisor(pointcut, txAdvice(txManager));
 	}
 }
