@@ -1,7 +1,5 @@
 package egovframework.com.cmm.web;
 
-import javax.annotation.Resource;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import egovframework.com.cmm.AbstractController;
 import egovframework.com.cmm.advice.CommonAdvice;
-import egovframework.com.cmm.interceptor.CustomAuthenticInterceptor;
 
 /**
  * 새로고침 컨트롤러 클래스
@@ -33,13 +30,10 @@ import egovframework.com.cmm.interceptor.CustomAuthenticInterceptor;
 public class ReloadController extends AbstractController {
 	@Autowired
 	private CommonAdvice commonAdvice;
-	@Resource(name="CustomAuthenticInterceptor")
-	private CustomAuthenticInterceptor customAuthenticInterceptor;
 	
 	@GetMapping("")
 	public String page(Model model) {
 		commonAdvice.refresh();
-		customAuthenticInterceptor.refresh();
 		
 		return "redirect:/main";
 	}

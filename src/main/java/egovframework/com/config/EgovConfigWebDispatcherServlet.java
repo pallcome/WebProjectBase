@@ -11,7 +11,6 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import egovframework.com.cmm.interceptor.CustomAuthenticInterceptor;
 import egovframework.com.cmm.interceptor.LogInterceptor;
 import egovframework.com.cmm.interceptor.SessionInterceptor;
 
@@ -50,8 +49,6 @@ public class EgovConfigWebDispatcherServlet implements WebMvcConfigurer {
 	private SessionInterceptor sessionInterceptor;
 	@Resource(name="LogInterceptor")
 	private LogInterceptor logInterceptor;
-	@Resource(name="CustomAuthenticInterceptor")
-	private CustomAuthenticInterceptor customAuthenticInterceptor;
 	
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
@@ -63,11 +60,6 @@ public class EgovConfigWebDispatcherServlet implements WebMvcConfigurer {
 		.excludePathPatterns(EXCLUDE_RESOURCE);
 		
 		registry.addInterceptor(logInterceptor)
-		.addPathPatterns("/**")
-		.excludePathPatterns(EXCLUDE_RESOURCE)
-		.excludePathPatterns(EXCLUDE_PAGE);
-		
-		registry.addInterceptor(customAuthenticInterceptor)
 		.addPathPatterns("/**")
 		.excludePathPatterns(EXCLUDE_RESOURCE)
 		.excludePathPatterns(EXCLUDE_PAGE);

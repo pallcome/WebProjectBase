@@ -26,10 +26,10 @@ import egovframework.com.cmm.AbstractController;
 public class MainController extends AbstractController {
 	@GetMapping("/")
 	public String page(Model model) {
-		return "redirect:/evaluation/result/reg";
+		return "redirect:/main";
 	}
 	@GetMapping("/main")
 	public String main(Model model) {
-		return "redirect:/evaluation/result/reg";
+		return viewResolver(this, model);
 	}
 }
