@@ -15,7 +15,7 @@ import javax.imageio.ImageIO;
 import org.apache.commons.io.FileUtils;
 import org.egovframe.rte.fdl.cmmn.exception.EgovBizException;
 import org.egovframe.rte.fdl.cryptography.EgovCryptoService;
-import org.egovframe.rte.fdl.property.EgovPropertyService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -47,14 +47,15 @@ import net.coobird.thumbnailator.Thumbnails;
 public class EgovFileMngUtil {
 
 	public static final int BUFF_SIZE = 2048;
-	private final String FILE_STORE_PATH = EgovProperties.getProperty("Globals.fileStorePath");
-	private final String ALGORITM_KEY = EgovProperties.getProperty("Globals.crypto.algoritm");
+	@Value("${file.path}")
+	private String FILE_STORE_PATH;
+	@Value("${crypto.algoritm}")
+	private String ALGORITM_KEY;
 	// 파일 확장자
-	private final String ALLOW_EXT_FILE = EgovProperties.getProperty("Globals.fileUpload.Extensions").toLowerCase();
-	private final String ALLOW_EXT_IMAGE = EgovProperties.getProperty("Globals.fileUpload.Extensions.Images").toLowerCase();
-
-	@Resource(name = "propertiesService")
-	protected EgovPropertyService propertyService;
+	@Value("${file.extension.file}")
+	private String ALLOW_EXT_FILE;
+	@Value("${file.extension.image}")
+	private String ALLOW_EXT_IMAGE;
 	
 	/** 암호화서비스 */
 	@Resource(name = "egovARIACryptoService")
@@ -72,7 +73,7 @@ public class EgovFileMngUtil {
 	public Map<String, Object> parseFileInf(MultipartFile file, Map<String, Object> thumb, String accept) throws IOException, EgovBizException {
 	
 		String yyyyMM = EgovDateUtil.getCurrentDate("yyyyMM");
-		String storePathString = propertyService.getString("Globals.fileStorePath");
+		String storePathString = FILE_STORE_PATH;
 		String uploadPathString = "/" + yyyyMM;
 	
 		File saveFolder = new File(EgovWebUtil.filePathBlackList(storePathString + uploadPathString));

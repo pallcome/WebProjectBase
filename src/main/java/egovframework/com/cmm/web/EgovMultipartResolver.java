@@ -24,6 +24,7 @@ import java.util.Map;
 import javax.servlet.ServletContext;
 
 import org.apache.commons.fileupload.FileItem;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.util.StringUtils;
@@ -31,7 +32,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
-import egovframework.com.cmm.service.EgovProperties;
 import egovframework.let.utl.fcc.service.EgovFileUploadUtil;
 import lombok.extern.slf4j.Slf4j;
 
@@ -51,12 +51,14 @@ import lombok.extern.slf4j.Slf4j;
  *  2009.03.25   이삼섭              최초 생성
  *  2011.06.11   서준식              스프링 3.0 업그레이드 API변경으로인한 수정
  *  2020.10.27   신용호              예외처리 수정
- *  2020.10.29   신용호              허용되지 않는 확장자 업로드 제한 (globals.properties > Globals.fileUpload.Extensions)
+ *  2020.10.29   신용호              허용되지 않는 확장자 업로드 제한 (globals.properties > file.extendsion.file)
  *
  *      </pre>
  */
 @Slf4j
 public class EgovMultipartResolver extends CommonsMultipartResolver {
+	@Value("${file.extension.file}")
+	String whiteListFileUploadExtensions;
 
 	public EgovMultipartResolver() {
 	}
@@ -79,7 +81,6 @@ public class EgovMultipartResolver extends CommonsMultipartResolver {
 		// 스프링 3.0변경으로 수정한 부분
 		MultiValueMap<String, MultipartFile> multipartFiles = new LinkedMultiValueMap<String, MultipartFile>();
 		Map<String, String[]> multipartParameters = new HashMap<String, String[]>();
-		String whiteListFileUploadExtensions = EgovProperties.getProperty("Globals.fileUpload.Extensions");
 		Map<String, String> mpParamContentTypes = new HashMap<String, String>();
 
 		// Extract multipart files and multipart parameters.

@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 
 import org.apache.ibatis.plugin.Interceptor;
@@ -17,9 +16,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.context.annotation.PropertySources;
-import org.springframework.core.env.Environment;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.jdbc.support.lob.DefaultLobHandler;
@@ -45,22 +41,9 @@ import egovframework.com.cmm.interceptor.SqlLogInterceptor;
  *
  */
 @Configuration
-@PropertySources({
-	@PropertySource("classpath:/application.properties")
-})
 public class EgovConfigAppMapper {
 	@Autowired
 	DataSource dataSource;
-
-	@Autowired
-	Environment env;
-
-	private String dbType;
-
-	@PostConstruct
-	void init() {
-		dbType = env.getProperty("Globals.DbType");
-	}
 
 	@Bean
 	@Lazy
@@ -88,9 +71,10 @@ public class EgovConfigAppMapper {
 				.getResource("classpath:/egovframework/mapper/config/mapper-config.xml"));
 		try {
 			List<Resource> resources = new ArrayList<>();
-			Collections.addAll(resources, pathMatchingResourcePatternResolver.getResources("classpath:/egovframework/mapper/let/**/*_" + dbType + ".xml"));
+//			Collections.addAll(resources, pathMatchingResourcePatternResolver.getResources("classpath:/egovframework/mapper/**/*.xml"));
 			Collections.addAll(resources, pathMatchingResourcePatternResolver.getResources("classpath:/egovframework/mapper/app/**/*.xml"));
 			Collections.addAll(resources, pathMatchingResourcePatternResolver.getResources("classpath:/egovframework/mapper/com/**/*.xml"));
+			Collections.addAll(resources, pathMatchingResourcePatternResolver.getResources("classpath:/egovframework/mapper/let/**/*.xml"));
 			
 			sqlSessionFactoryBean.setMapperLocations(resources.toArray(new Resource[0]));
 		} catch (IOException e) {

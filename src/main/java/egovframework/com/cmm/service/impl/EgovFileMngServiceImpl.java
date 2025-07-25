@@ -11,12 +11,12 @@ import org.apache.commons.io.FileUtils;
 import org.egovframe.rte.fdl.cmmn.exception.FdlException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import egovframework.com.cmm.AbstractServiceImpl;
 import egovframework.com.cmm.EgovWebUtil;
 import egovframework.com.cmm.service.EgovFileMngService;
-import egovframework.com.cmm.service.EgovProperties;
 import egovframework.let.utl.fcc.service.EgovStringUtil;
 
 /**
@@ -38,7 +38,8 @@ import egovframework.let.utl.fcc.service.EgovStringUtil;
 @Service("EgovFileMngService")
 public class EgovFileMngServiceImpl extends AbstractServiceImpl implements EgovFileMngService {
 	private final Logger logger = LoggerFactory.getLogger(getClass());
-	private final String FILE_STORE_PATH = EgovProperties.getProperty("Globals.fileStorePath");
+	@Value("${file.path}")
+	private String FILE_STORE_PATH;
 	@Resource(name = "FileManageDAO")
 	private FileManageDAO fileMngDAO;
 

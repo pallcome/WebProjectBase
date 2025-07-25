@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.egovframe.rte.fdl.cmmn.exception.EgovBizException;
 import org.egovframe.rte.fdl.cryptography.EgovCryptoService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,7 +23,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import egovframework.com.cmm.EgovWebUtil;
 import egovframework.com.cmm.service.EgovFileMngService;
-import egovframework.com.cmm.service.EgovProperties;
 import egovframework.let.utl.fcc.service.EgovStringUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -64,7 +64,8 @@ public class EgovFileDownloadController {
     @Resource(name="egovARIACryptoService")
     EgovCryptoService cryptoService;
 	
-	private final String FILE_STORE_PATH = EgovProperties.getProperty("Globals.fileStorePath");
+    @Value("${file.path}")
+	private String FILE_STORE_PATH;
 
 	/**
 	 * 브라우저 구분 얻기.

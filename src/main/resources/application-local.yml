@@ -1,0 +1,23 @@
+#custom property
+file:
+  path: C:/fileupload/webProjectBase
+
+server:
+  port: 8000
+  servlet:
+    context-path: /webProjectBase
+spring: 
+  datasource:
+    primary:
+      driver-class-name: org.mariadb.jdbc.Driver
+      url: jdbc:mariadb://office.solutis.co.kr:3306/GNCAP
+      username: GNCAP
+      password: lca5534
+    secondary:
+      #driver-class-name: oracle.jdbc.driver.OracleDriver
+      #url: jdbc:oracle:thin:@office.solutis.co.kr:5400011:UTF8CUR
+      #username: s_esight
+      #password: thffnxltm!138
+logging:
+  level:
+    sql: DEBUG

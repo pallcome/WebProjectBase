@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletResponse;
 
 import org.egovframe.rte.fdl.cryptography.EgovCryptoService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import egovframework.com.cmm.SessionVO;
 import egovframework.com.cmm.service.EgovFileMngService;
-import egovframework.com.cmm.service.EgovProperties;
 import egovframework.let.utl.fcc.service.EgovStringUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -65,8 +65,10 @@ public class EgovImageProcessController extends HttpServlet {
     @Resource(name="egovARIACryptoService")
     EgovCryptoService cryptoService;
     
-	private final String FILE_STORE_PATH = EgovProperties.getProperty("Globals.fileStorePath");
-	private final String ALGORITM_KEY = EgovProperties.getProperty("Globals.crypto.algoritm");
+    @Value("${file.path}")
+	private String FILE_STORE_PATH;
+    @Value("${crypto.algoritm}")
+	private String ALGORITM_KEY;
 
 	/**
 	 * 첨부된 이미지에 대한 미리보기 기능을 제공한다.

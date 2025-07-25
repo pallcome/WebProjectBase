@@ -1,0 +1,71 @@
+spring:
+  profiles:
+    default: local
+    group:
+      local: local
+      dev: dev
+      prod: prod
+---
+#custom
+crypto:
+  algoritm: Yakd@4M923W110@59*
+file:
+  addedOptions: false
+  posblAtchFileSize: 524288000
+  extension: 
+    file: .gif.jpg.jpeg.png.xls.xlsx
+    image: .gif.jpg.jpeg.png
+#common
+server:
+  servlet:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+    session:
+      timeout: 21600
+  error:
+    whitelabel:
+      enabled: false
+spring: 
+  devtools:
+    restart:
+      enabled: false
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 30MB  # 파일당 최대 크기
+      max-request-size: 800MB # 전체 요청의 최대 크기
+#thymeleaf
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    encoding: UTF-8
+    cache: false
+logging:
+  level:
+    root: ERROR
+---
+#local
+spring:
+  config:
+    activate:
+      on-profile: local
+    import: classpath:application-local.yml
+---
+#dev
+spring:
+  config:
+    activate:
+      on-profile: dev
+    import: classpath:application-dev.yml
+---
+#prod
+spring:
+  config:
+    activate:
+      on-profile: prod
+    import: classpath:application-prod.yml

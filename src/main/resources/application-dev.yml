@@ -1,0 +1,20 @@
+spring:
+  datasource:
+    primary:
+      driver-class-name: oracle.jdbc.driver.OracleDriver
+      url: jdbc:oracle:thin:@office.solutis.co.kr:54000:UTF8CUR
+      username: s_esight
+      password: thffnxltm!138
+    secondary:
+      #driver-class-name: oracle.jdbc.driver.OracleDriver
+      #url: jdbc:oracle:thin:@office.solutis.co.kr:5400011:UTF8CUR
+      #username: s_esight
+      #password: thffnxltm!138
+logging:
+  file:
+    path: D:/logs/esight-new
+  logback:
+    rollingpolicy:
+      max-history: 30
+  level:
+    sql: ERROR

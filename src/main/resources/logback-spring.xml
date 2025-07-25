@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration scan="true">
-
-	<!-- application.properties 에 선언된 값을 가져옵니다 -->
-	<property resource="application.properties" />
 	<property name="LOG_PATH" value="${logging.file.path}" />
 	<property name="LOG_FILE_NAME" value="${logging.file.name}" />
 	<property name="LOG_PATTERN" value="%d{HH:mm} %-5level [%logger] %msg%n" />
 	<property name="LOG_LEVEL" value="${logging.root.level}" />
-	<!-- SQL 전용 레벨: application.properties 에 logging.level.sql 로 지정 -->
+	<!-- SQL 전용 레벨: application.yml 에 logging.level.sql 로 지정 -->
 	<property name="SQL_LEVEL" value="${logging.level.sql}" />
 
 	<!-- 콘솔 Appender -->

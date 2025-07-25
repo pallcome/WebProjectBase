@@ -128,7 +128,7 @@ public class EgovConfigAppCommon {
 	}
 
 	/**
-	 * 확장자 제한 : globals.properties > Globals.fileUpload.Extensions로 설정
+	 * 확장자 제한 : globals.properties > file.extendsion.file로 설정
 	 * @return [MultipartResolver 설정] EgovMultipartResolver 등록
 	 */
 	@Bean

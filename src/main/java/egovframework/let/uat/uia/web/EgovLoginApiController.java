@@ -8,7 +8,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.egovframe.rte.fdl.cmmn.trace.LeaveaTrace;
-import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
@@ -60,10 +59,6 @@ public class EgovLoginApiController {
 	/** EgovMessageSource */
 	@Resource(name = "egovMessageSource")
 	EgovMessageSource egovMessageSource;
-
-	/** EgovPropertyService */
-	@Resource(name = "propertiesService")
-	protected EgovPropertyService propertiesService;
 
 	/** TRACE */
 	@Resource(name = "leaveaTrace")

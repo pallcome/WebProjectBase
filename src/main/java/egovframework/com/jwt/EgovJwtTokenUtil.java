@@ -5,10 +5,10 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import egovframework.com.cmm.LoginVO;
-import egovframework.com.cmm.service.EgovProperties;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -23,7 +23,8 @@ public class EgovJwtTokenUtil implements Serializable{
 	//public static final long JWT_TOKEN_VALIDITY = 24 * 60 * 60; //하루
 	public static final long JWT_TOKEN_VALIDITY = (long) ((1 * 60 * 60) / 60) * 60; //토큰의 유효시간 설정, 기본 60분
 	
-	public static final String SECRET_KEY = EgovProperties.getProperty("Globals.jwt.secret");
+	@Value("${crypto.algoritm}")
+	public static String SECRET_KEY;
 	
 	//retrieve username from jwt token
     public String getUserIdFromToken(String token) {

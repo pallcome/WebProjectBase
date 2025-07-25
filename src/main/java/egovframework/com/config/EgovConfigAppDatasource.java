@@ -1,13 +1,11 @@
 package egovframework.com.config;
 
-import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 
 import org.apache.commons.dbcp2.BasicDataSource;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 
@@ -30,51 +28,14 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
  */
 @Configuration
 public class EgovConfigAppDatasource {
-
-	/**
-	 *  @Value 을 어노테이션을 이용하는 방법
-	 */
-	//	@Value("${Globals.DbType}")
-	//	private String dbType;
-	//
-	//	@Value("${Globals.DriverClassName}")
-	//	private String className;
-	//
-	//	@Value("${Globals.Url}")
-	//	private String url;
-	//
-	//	@Value("${Globals.UserName}")
-	//	private String userName;
-	//
-	//	@Value("${Globals.Password}")
-	//	private String password;
-
-	/**
-	 *  Environment 의존성 주입하여 사용하는 방법
-	 */
-
-	@Autowired
-	Environment env;
-
-	private String dbType;
-
+	@Value("${spring.datasource.primary.driver-class-name}")
 	private String className;
-
+	@Value("${spring.datasource.primary.url}")
 	private String url;
-
+	@Value("${spring.datasource.primary.username}")
 	private String userName;
-
+	@Value("${spring.datasource.primary.password}")
 	private String password;
-
-	@PostConstruct
-	void init() {
-		dbType = env.getProperty("Globals.DbType");
-		//Exception 처리 필요
-		className = env.getProperty("Globals." + dbType + ".DriverClassName");
-		url = env.getProperty("Globals." + dbType + ".Url");
-		userName = env.getProperty("Globals." + dbType + ".UserName");
-		password = env.getProperty("Globals." + dbType + ".Password");
-	}
 
 	/**
 	 * @return [dataSource 설정] HSQL 설정
@@ -105,10 +66,6 @@ public class EgovConfigAppDatasource {
 	 */
 	@Bean(name = {"dataSource", "egov.dataSource", "egovDataSource"})
 	public DataSource dataSource() {
-		if ("hsql".equals(dbType)) {
-			return dataSourceHSQL();
-		} else {
-			return basicDataSource();
-		}
+		return basicDataSource();
 	}
 }
