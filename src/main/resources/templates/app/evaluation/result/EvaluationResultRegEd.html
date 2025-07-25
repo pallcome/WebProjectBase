@@ -1,0 +1,685 @@
+<th:block layout:decorate="~{${layoutName}}">
+<!-- 페이지 content(ui) -->
+<main layout:fragment="pageContent" class="content">
+	<div class="container-fluid p-0">
+		<!-- s : 내용 시작 -->
+		<div class="row align-items-center content-head">
+			<div class="col-md-6">
+				<h2 class="h1 mb-0 col-md-auto">대상 차량 평가 결과 등록</h2>
+			</div>
+			<div class="col-md-6">
+				<nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+					<ol class="breadcrumb mb-0 justify-content-end">
+						<li class="breadcrumb-item" aria-current="page"><i class="fas fa-home me-1"></i>홈</li>
+						<li class="breadcrumb-item" aria-current="page">평가 결과 정보</li>
+						<li class="breadcrumb-item" aria-current="page">대상 차량 평가 결과 등록</li>
+					</ol>
+				</nav>
+			</div>
+		</div>
+		<div class="card">
+			<div class="card-body">
+				<!-- s : subtitle-wrap -->
+				<div class="subtitle-wrap row">
+					<div class="col-md-6">
+						<h3 class="card-title">평가 결과 등록</h5>
+					</div>
+					<div class="col-md-6">
+						<div th:if="${editable}" class="text-sm-end">
+							<button type="button" id="btnSave" class="btn btn-primary"><i class="fas fa-save me-2"></i>저장</button>
+							<button type="button" id="btnList" class="btn btn-secondary"><i class="fas fa-list-ul me-2"></i>목록</button>
+						</div>
+					</div>
+				</div>
+				<!-- e : subtitle-wrap -->
+				<!-- s : carInfo -->
+				<form id="carForm">
+					<div class="carInfo">
+						<div class="carImagesArea">
+						<!-- TODO 차량 이미지썸네일  -->
+							<img name="CAR_IMAGE" src="" alt="">
+						</div>
+						<div class="carInfo-box">
+							<div class="top">
+								<div class="brand-icon">
+								<!-- TODO 제조사 로고  이미지썸네일  -->
+									<img name="MKR_IMAGE" src="" alt="">
+								</div>
+								<input type="text" id="MNFTR_YR" name="MNFTR_YR" class="brand-year" readonly>
+							</div>
+							<div class="mid">
+								<input type="text" id="CAR_MDL_NM" name="CAR_MDL_NM" class="form-control readonly" readonly>
+							</div>
+							<div class="bot">
+								<div class="row align-items-center">
+									<div class="col-sm-auto">
+										<label for="TEST_RSLT_RLS_YN" class="col-form-label">
+											결과 공개여부
+										</label>
+									</div>
+									<div class="col-sm">
+										<div class="form-check form-check-inline">
+											<input class="form-check-input" type="radio" name="TEST_RSLT_RLS_YN" id="TEST_RSLT_RLS_N" value="N">
+											<label class="form-check-label" for="TEST_RSLT_RLS_N">비공개</label>
+										</div>
+										<div class="form-check form-check-inline">
+											<input class="form-check-input" type="radio" name="TEST_RSLT_RLS_YN" id="TEST_RSLT_RLS_Y" value="Y">
+											<label class="form-check-label" for="TEST_RSLT_RLS_Y">공개</label>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</form>
+				<!-- e : carInfo -->
+				<!-- 탭 s : tab-wrap-->
+				<div class="tab-wrap">
+					<ul class="nav nav-tabs" role="tablist">
+						<li class="nav-item"><a class="nav-link active" href="#primary-tab-1" data-bs-toggle="tab" role="tab" data-tab-type="tot">종합정보</a></li>
+						<li class="nav-item"><a class="nav-link" href="#primary-tab-2" data-bs-toggle="tab" role="tab" data-tab-type="ghg">연비&middot;온실가스</a></li>
+						<li class="nav-item"><a class="nav-link" href="#primary-tab-3" data-bs-toggle="tab" role="tab" data-tab-type="lca">LCA 전생애주기</a></li>
+						<li class="nav-item"><a class="nav-link" href="#primary-tab-4" data-bs-toggle="tab" role="tab" data-tab-type="air">차내실내공기질</a></li>
+					</ul>
+					<div class="tab-content">
+						<div class="tab-pane active" id="primary-tab-1" role="tabpanel">
+							<form id="totForm">
+								<!-- s : 종합정보 -->
+								<div class="row">
+									<div class="col-sm-6">
+										<div class="table-form">
+											<table class="table table-bordered align-middle">
+												<colgroup>
+													<col width="120">
+													<col width="*">
+												</colgroup>
+												<tbody>
+													<tr>
+														<th>
+															<label class="col-form-label required">종합정보 배점</label>
+														</th>
+														<td>
+															<div class="row align-items-center gx-1">
+																<div class="col-sm-auto">
+																	<div class="icon-area">
+																		<img name="IMAGE" src="" alt="">
+																	</div>
+																</div>
+																<div class="col-sm">
+																	<input type="text" name="TEST_RSLT_SCR" class="form-control">
+																</div>
+															</div>
+														</td>
+													</tr>
+													<tr>
+														<th>
+															<label class="col-form-label">제조사</label>
+														</th>
+														<td >
+															<input type="text" name="MKR_NM" class="form-control readonly" readonly>
+														</td>
+													</tr>
+													<tr>
+														<th>
+															<label class="col-form-label">모델명</label>
+														</th>
+														<td >
+															<input type="text" name="CAR_MDL_NM" class="form-control readonly" readonly>
+														</td>
+													</tr>
+													<tr>
+														<th>
+															<label class="col-form-label">차종 분류1</label>
+														</th>
+														<td >
+															<input type="text" name="CARMDL_1N_NM" class="form-control readonly" readonly>
+														</td>
+													</tr>
+													<tr>
+														<th>
+															<label class="col-form-label">차종 분류2</label>
+														</th>
+														<td >
+															<input type="text" name="CARMDL_2N_NM" class="form-control readonly" readonly>
+														</td>
+													</tr>
+													<tr>
+														<th>
+															<label class="col-form-label">제조년도</label>
+														</th>
+														<td >
+															<input type="text" name="MNFTR_YR" class="form-control readonly" readonly>
+														</td>
+													</tr>
+													<tr>
+														<th>
+															<label class="col-form-label">연료</label>
+														</th>
+														<td >
+															<input type="text" name="FUEL_NM" class="form-control readonly" readonly>
+														</td>
+													</tr>
+													<tr>
+														<th>
+															<label class="col-form-label">변속기</label>
+														</th>
+														<td >
+															<input type="text" name="TRSM_NM" class="form-control readonly" readonly>
+														</td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+									</div>
+									<div class="col-sm-6">
+										<!-- s : view-box -->
+										<div class="view-box">
+											<h3 class="inner-title">
+												<span class="text-green">종합정보</span> 배점기준
+											</h3>
+											<table id="totTestScoreList" class="table table-striped"></table>
+										</div>
+										<!-- e : view-box -->
+									</div>
+								</div>
+								<!-- e : 종합정보 -->
+							</form>
+						</div>
+						<div class="tab-pane" id="primary-tab-2" role="tabpanel">
+							<div class="row">
+								<div class="col-sm-6">
+									<h3 class="inner-title">
+										연비&middot;온실가스 시험 항목별 평가 결과
+									</h3>
+									<div class="table-form">
+										<form id="ghgForm">
+											<table class="table table-bordered align-middle">
+												<colgroup>
+													<col width="120">
+													<col width="*">
+													<col width="160">
+													<col width="150">
+												</colgroup>
+												<tbody>
+													<tr>
+														<th>
+															<label class="col-form-label">연비&middot;온실가스<br/>배점</label>
+														</th>
+														<td>
+															<div class="row align-items-center gx-1">
+																<div class="col-sm-auto">
+																	<div class="icon-area">
+																		<img name="IMAGE" src="" alt="">
+																	</div>
+																</div>
+																<div class="col-sm">
+																	<input type="text" name="TEST_RSLT_SCR" class="form-control">
+																</div>
+																<div class="col-sm-auto">
+																	<button class="btn btn-info btnFormScore"><i class="fas fa-search-plus me-2"></i>배점기준보기</button>
+																</div>
+															</div>
+														</td>
+														<th>
+															<label class="col-form-label ">나무그루수(상수리나무) <small>(1km 주행당 CO2 배출량)</small></label>
+														</th>
+														<td>
+															<div class="row align-items-center gx-1">
+																<div class="col-sm">
+																	<input type="text" name="NOTREE" class="form-control" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 0, 'allowMinus': false, 'rightAlign': false">
+																</div>
+																<div class="col-sm-auto">그루</div>
+															</div>
+														</td>
+													</tr>
+												</tbody>
+											</table>
+										</form>
+									</div>
+									<!-- s : data-table-wrap -->
+									<div class="data-table-wrap">
+										<table id="ghgResultScoreList" class="table table-striped w-100 nowrap"></table>
+									</div>
+								</div>
+								<div class="col-sm-6">
+									<!-- s : view-box -->
+									<div class="view-box">
+										<h3 class="inner-title">
+											<span class="text-green" id="ghgTestScoreTitle"></span> 배점기준
+										</h3>
+										<table id="ghgTestScoreList" class="table table-striped"></table>
+									</div>
+									<!-- e : view-box -->
+								</div>
+							</div>
+						</div>
+						<div class="tab-pane" id="primary-tab-3" role="tabpanel">
+							<div class="row">
+								<div class="col-sm-6">
+									<h3 class="inner-title">
+										LCA 전생애주기 시험 항목별 평가 결과 
+									</h3>
+									<div class="table-form">
+										<form id="lcaForm">
+											<table class="table table-bordered align-middle">
+												<colgroup>
+													<col width="120">
+													<col width="*">
+													<col width="160">
+													<col width="150">
+												</colgroup>
+												<tbody>
+													<tr>
+														<th>
+															<label class="col-form-label">LCA 전생애주기<br/>배점</label>
+														</th>
+														<td>
+															<div class="row align-items-center gx-1">
+																<div class="col-sm-auto">
+																	<div class="icon-area">
+																		<img name="IMAGE" src="" alt="">
+																	</div>
+																</div>
+																<div class="col-sm">
+																	<input type="text" name="TEST_RSLT_SCR" class="form-control">
+																</div>
+																<div class="col-sm-auto">
+																	<button class="btn btn-info btnFormScore"><i class="fas fa-search-plus me-2"></i>배점기준보기</button>
+																</div>
+															</div>
+														</td>
+														<th>
+															<label class="col-form-label ">나무그루수(상수리나무) <small>(1km 주행당 CO2 배출량)</small></label>
+														</th>
+														<td>
+															<div class="row align-items-center gx-1">
+																<div class="col-sm">
+																	<input type="text" name="NOTREE" class="form-control" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 0, 'allowMinus': false, 'rightAlign': false">
+																</div>
+																<div class="col-sm-auto">그루</div>
+															</div>
+														</td>
+													</tr>
+												</tbody>
+											</table>
+										</form>
+									</div>
+									<!-- s : data-table-wrap -->
+									<div class="data-table-wrap">
+										<table id="lcaResultScoreList" class="table table-striped w-100 nowrap"></table>
+									</div>
+								</div>
+								<div class="col-sm-6">
+									<!-- s : view-box -->
+									<div class="view-box">
+										<h3 class="inner-title">
+											<span class="text-green" id="lcaTestScoreTitle"></span> 배점기준
+										</h3>
+										<table id="lcaTestScoreList" class="table table-striped"></table>
+									</div>
+									<!-- e : view-box -->
+								</div>
+							</div>
+						</div>
+						<div class="tab-pane" id="primary-tab-4" role="tabpanel">
+							<div class="row">
+								<div class="col-sm-6">
+									<h3 class="inner-title">
+										차내실내공기질 시험 항목별 평가 결과
+									</h3>
+									<div class="table-form">
+										<form id="airForm">
+											<table class="table table-bordered align-middle">
+												<colgroup>
+													<col width="120">
+													<col width="*">
+												</colgroup>
+												<tbody>
+													<tr>
+														<th>
+															<label class="col-form-label">차내실내공기질<br/>배점</label>
+														</th>
+														<td>
+															<div class="row align-items-center gx-1">
+																<div class="col-sm-auto">
+																	<div class="icon-area">
+																		<img name="IMAGE" src="" alt="">
+																	</div>
+																</div>
+																<div class="col-sm">
+																	<input type="text" name="TEST_RSLT_SCR" class="form-control">
+																</div>
+																<div class="col-sm-auto">
+																	<button class="btn btn-info btnFormScore"><i class="fas fa-search-plus me-2"></i>배점기준보기</button>
+																</div>
+															</div>
+														</td>
+													</tr>
+												</tbody>
+											</table>
+										</form>
+									</div>
+									<!-- s : data-table-wrap -->
+									<div class="data-table-wrap">
+										<table id="airResultScoreList" class="table table-striped w-100 nowrap"></table>
+									</div>
+								</div>
+								<div class="col-sm-6">
+									<!-- s : view-box -->
+									<div class="view-box">
+										<h3 class="inner-title">
+											<span class="text-green" id="airTestScoreTitle"></span> 배점기준
+										</h3>
+										<table id="airTestScoreList" class="table table-striped"></table>
+									</div>
+									<!-- e : view-box -->
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- 탭 e : tab-wrap-->
+			</div>
+		</div>
+		<!-- e : 내용 끝 -->
+	</div>
+</main>
+<!-- 페이지 script -->
+<th:block layout:fragment="pageScript">
+<script th:inline="javascript">
+const  myapp = (function() {
+	const myapp = {};
+	
+	<!--/************ Form 설정 ************/-->
+	$("select").select2();
+	
+	<!--/************ DataTable 선언 ************/-->
+	<!--/* 종합정보 배점기준 */-->
+	DataTable.init({
+		targetId : "totTestScoreList"
+		, columns : [
+			{data : "SORT_SEQ", title : "정렬", width : "60px", className : "text-center"}
+			, {data : "TEST_GRD", title : "등급", width : "60px", className : "text-center"}
+			, {data : "MIN_SCR", title : "최소배점", width : "90px", className : "text-center"}
+			, {data : "MAX_SCR", title : "최대배점", width : "90px", className : "text-center"}
+			, {data : "SCR_EXPLN", title : "배점설명", width : "200px", className : "text-start"}
+		]
+		, UI : {head : false, paging : false}
+		, order : false
+	});
+	
+	["ghg", "lca", "air"].forEach(tabType => {
+		<!--/* 항목별 평가 결과 */-->
+		DataTable.init({
+			targetId : tabType + "ResultScoreList"
+			, columns : [
+				{data : "TEST_ARTCL_NM", title : "시험평가항목", width : "200px", className : "text-start"}
+				, {data : "UNIT_NM", title : "단위", width : "100px", className : "text-center"}
+				, {data : "TEST_RSLT_SCR", title : "점수", width : "120px", className : "text-end"
+					, render : function(data, type, rowData, meta) {
+						return myapp.tableScoreRender(data, type, rowData, meta);
+					}
+				}
+				, {data : "SCR_RANGE", title : "배점기준", width : "100px", className : "text-center"}
+				, {data : "", title : "배점보기", width : "100px", className : "text-center"
+					, render : function(data, type, rowData, meta) {
+						<!--/* 배점 입력이고 배점이 등록된 경우  */-->
+						if(rowData.DRCT_INPT_YN == "N" && (rowData.SCR_RANGE || rowData.SCR_INPUT)) { 
+							return DataTable.render({
+								type : type, rowData : rowData, meta : meta
+								, data : "배점기준보기"
+								, editType : "button"
+								, color : "info"
+								, icon : "plus"
+								, className : "btnScore"
+							});
+						}else {
+							return "";
+						}
+					}
+				}
+			]
+			, UI : {head : false, paging : false}
+			, visibleRowNo : true
+			, setRowsCallback : function(result, setting) {
+				const tableId = setting.table().node().id;
+				<!--/* 버튼 이벤트 설정 */-->
+				$(`#${tableId}`).off("click", ".btnScore")
+				.on("click", ".btnScore", function() {
+					const $btn = $(this);
+					const rowIdx = $btn.data("row");
+					const table = setting.table();
+					const rowData = table.row(rowIdx).data();
+					
+					myapp.searchScore(rowData, tabType);
+				});
+			}
+		});
+		<!--/* 배점기준 */-->
+		DataTable.init({
+			targetId : tabType + "TestScoreList"
+			, columns : [
+				{data : "SORT_SEQ", title : "정렬", width : "60px", className : "text-center"}
+				, {data : "TEST_GRD", title : "등급", width : "60px", className : "text-center"}
+				, {data : "MIN_SCR", title : "최소배점", width : "90px", className : "text-center"}
+				, {data : "MAX_SCR", title : "최대배점", width : "90px", className : "text-center"}
+				, {data : "SINGLE_SCR", title : "배점", width : "60px", visible : false, className : "text-center"}
+				, {data : "SCR_EXPLN", title : "배점설명", width : "200px", className : "text-start"}
+			]
+			, UI : {head : false, paging : false}
+			, order : false
+		});
+	})
+	<!--/************ 함수 선언 ************/-->
+	<!--/* 점수 input mask */-->
+	myapp.scoreInputMask = function(data) {
+		const mask = {
+			alias: 'numeric'
+			, autoGroup: true
+			, digits: 3
+			, digitsOptional: false
+			, allowMinus: false
+			, rightAlign: false
+			, removeMaskOnSubmit: true
+		}
+		const range = data.SCR_RANGE?.split(" ~ ");
+		if(range) {
+			mask.min = range[0];
+			mask.max = range[1];
+		}
+		return mask;
+	}
+	<!--/* table 점수 render */-->
+	myapp.tableScoreRender = function(data, type, rowData, meta) {
+		if(rowData.DRCT_INPT_YN == "Y") { <!--/* 직접 입력인 경우 */-->
+			const mask = myapp.scoreInputMask(rowData);
+			return DataTable.render({
+				type : type, rowData : rowData, meta : meta
+				, data : data
+				, editType : "input"
+				, required : true
+				, mask : mask
+				, readonly : [[${!editable}]]
+			});
+			
+		}else if(rowData.DRCT_INPT_YN == "N") { <!--/* 배점 입력인 경우 */-->
+			if(!rowData.SCR_RANGE && !rowData.SCR_INPUT) { <!--/* 배점기준이 등록되지 않은 경우 */-->
+				return "";
+				
+			}else {
+				const inDivYn = rowData.INDIV_YN; <!--/* 단일 여부 */-->
+				if(inDivYn == "Y") { <!--/* 단일 */-->
+					let options = ["선택", ...rowData.SCR_INPUT.split(",")];
+					options = options.map(item => {
+						const value = item == "선택" ? "" : item;
+						return {value : value, text : item};
+					});
+					
+					return DataTable.render({
+						type : type, rowData : rowData, meta : meta
+						, data : data
+						, editType : "select"
+						, options : options
+						, disabled : [[${!editable}]]
+					});
+					
+				}else {
+					const mask = myapp.scoreInputMask(rowData);
+					return DataTable.render({
+						type : type, rowData : rowData, meta : meta
+						, data : data
+						, editType : "input"
+						, required : true
+						, mask : mask
+						, readonly : [[${!editable}]]
+					});
+				}
+			}
+		}else {
+			return "";
+		}
+	}
+	<!--/* form 점수 render */-->
+	myapp.formScoreRender = function(formId, data) {
+		const $input = $(`#${formId} :input[name='TEST_RSLT_SCR']`);
+		if(data.DRCT_INPT_YN == "Y") { <!--/* 직접 입력인 경우 */-->
+			$(`#${formId} :button.btnFormScore`).hide();
+			
+		}else if(data.DRCT_INPT_YN == "N") { <!--/* 배점 입력인 경우 */-->
+			if(!data.SCR_RANGE && !data.SCR_INPUT) {
+				$input.addClass("readonly").prop("readonly", true);
+				
+			}else {
+				const inDivYn = data.INDIV_YN; <!--/* 단일 여부 */-->
+				if(inDivYn == "Y") { <!--/* 단일 */-->
+					const $select = $('<select>')
+									.attr('name', 'TEST_RSLT_SCR')
+									.attr('class', 'form-select');
+					
+					const options = ["선택", ...data.SCR_INPUT.split(",")];
+					options.forEach(item => {
+						const value = item == "선택" ? "" : item;
+						const $option = $('<option>').val(value).text(item);
+						if(value == data.TEST_RSLT_SCR) {
+							$option.attr('selected', true);
+						}
+						$select.append($option)
+					});
+					
+					$input.after($select).remove();
+					
+				}else {
+					const mask = myapp.scoreInputMask(data);
+					$input.inputmask(mask);
+				}
+			}
+		}else {
+			$input.addClass("readonly").prop("readonly", true);
+			$(`#${formId} :button.btnFormScore`).hide();
+		}
+	}
+	<!--/* 조회 */-->
+	myapp.search = function() {
+		Common.ajax({
+			url : /*[[@{/evaluation/result/reg/edit/select}]]*/
+			, data : {CAR_MDL_CD : /*[[${CAR_MDL_CD}]]*/}
+			, callback : function(result, textStatus, jqXHR) {
+				<!--/* 자동차 정보 */-->
+				Common.setFormData("carForm", result.carInfo);
+				<!--/* 종합정보 */-->
+				Common.setFormData("totForm", result.totInfo);
+				DataTable.setRows({rows : result.totTestScoreList}, "totTestScoreList");
+				myapp.formScoreRender("totForm", result.totInfo);
+				<!--/* 연비/온실가스 */-->
+				Common.setFormData("ghgForm", result.ghgInfo);
+				DataTable.setRows({rows : result.ghgResultScoreList}, "ghgResultScoreList");
+				myapp.formScoreRender("ghgForm", result.ghgInfo);
+				<!--/* LCA 전생애주기 */-->
+				Common.setFormData("lcaForm", result.lcaInfo);
+				DataTable.setRows({rows : result.lcaResultScoreList}, "lcaResultScoreList");
+				myapp.formScoreRender("lcaForm", result.lcaInfo);
+				<!--/* 차내실내공기질 */-->
+				Common.setFormData("airForm", result.airInfo);
+				DataTable.setRows({rows : result.airResultScoreList}, "airResultScoreList");
+				myapp.formScoreRender("airForm", result.airInfo);
+				
+				if([[${!editable}]]) {
+					$(":input:not(button,:radio,select)").prop("readonly", true).addClass("readonly");
+					$(":radio, select").prop("disabled", true).addClass("readonly");
+				}
+			}
+		});
+	}
+	myapp.search();
+	<!--/* 배점기준 조회 */-->
+	myapp.searchScore = function(data, tabType) {
+		Common.ajax({
+			url : /*[[@{/evaluation/result/reg/edit/selectTestScore}]]*/
+			, data : data
+			, callback : function(result, textStatus, jqXHR) {
+				$(`#${tabType}TestScoreTitle`).text(data.TEST_ARTCL_NM);
+				
+				DataTable.visible(["MIN_SCR", "MAX_SCR"], data.INDIV_YN != 'Y', tabType + "TestScoreList");
+				DataTable.visible("SINGLE_SCR", data.INDIV_YN == 'Y', tabType + "TestScoreList");
+				
+				DataTable.setRows({rows : result}, tabType + "TestScoreList");
+			}
+		});
+	}
+	
+	<!--/************ Form Event 선언 ************/-->
+	<!--/* tab 이동 */-->
+	$("[data-bs-toggle='tab']").on("shown.bs.tab", function(e) {
+		$(window).resize();
+	});
+	<!--/* Form 배점기준보기 버튼 이벤트 설정 */-->
+	$(".btnFormScore").on("click", function() {
+		const $tab = $("[data-bs-toggle='tab'].active");
+		const tabType = $tab.data("tabType");
+		const formData = $(`#${tabType}Form`).serializeObject();
+		formData.TEST_ARTCL_NM = $tab.html();
+		
+		myapp.searchScore(formData, tabType);
+	});
+	<!--/* 저장 버튼 이벤트 설정 */-->
+	$("#btnSave").on("click", function() {
+		const carForm = Common.valid($("#carForm"), "종합정보");
+		
+		if(!carForm.valid) {
+			Common.showValidDialog([carForm]);
+			return;
+		}
+		
+		Common.ajax({
+			url : /*[[@{/evaluation/result/reg/edit/save}]]*/
+			, toast : "save"
+			, data : {
+				carForm : $("#carForm").serializeObject()
+				, totForm : $("#totForm").serializeObject()
+				, ghgForm : $("#ghgForm").serializeObject()
+				, ghgRows : DataTable.getEditRowDataList("ghgResultScoreList")
+				, lcaForm : $("#lcaForm").serializeObject()
+				, lcaRows : DataTable.getEditRowDataList("lcaResultScoreList")
+				, airForm : $("#airForm").serializeObject()
+				, airRows : DataTable.getEditRowDataList("airResultScoreList")
+			}
+			, callback : function(result, textStatus, jqXHR) {
+				myapp.search();
+			}
+		});
+	});
+	<!--/* 목록 버튼 이벤트 설정 */-->
+	$("#btnList").on("click", function() {
+		location.href =  /*[[@{/evaluation/result/reg/}]]*/
+	});
+	
+	<!--/************ window 함수 선언 ************/-->
+	$(window).resize(function() {
+		DataTable.dataTableResize(); <!--/* DataTables resize */-->
+	});
+		
+	return myapp;
+}());
+</script>
+</th:block>
+</th:block>

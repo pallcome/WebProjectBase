@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" lang="ko"
+	data-bs-theme="light" data-layout="fluid" data-sidebar-theme="colored" data-sidebar-position="left" data-sidebar-behavior="sticky">
+<head>
+	<!--/* [공통 meta, title] */-->
+	<th:block th:replace="fragments/header :: headInfo"/>
+	
+	<!--/* [공통 CSS] */-->
+	<th:block th:replace="fragments/header :: css"/>
+	
+	<!--/* [화면 CSS] */-->
+	<th:block layout:fragment="pageCss"/>
+</head>
+<body>
+<!--/* s : wrapper */-->
+<div class="wrapper">
+	<div class="main-wrap">
+		<!--/* s : main */-->
+		<div class="main">
+			<!--/* [공통 첨부파일 업로드] */-->
+			<input type="file" id="fileUpload" name="fileUpload" style="display:none;"/>
+			<!--/* [화면 UI 콘텐츠] */-->
+			<main layout:fragment="pageContent"></main>
+		</div>
+		<!--/* e : main */-->
+		
+	
+		<!--/* [공통 JS] */-->
+		<th:block th:replace="fragments/script :: script"/>
+	
+		<!--/* [화면 전용 JS] */-->
+		<th:block layout:fragment="pageScript"/>
+	</div>
+</div>
+<!--/* e : wrapper */-->
+
+<!--/* ✅ [공통 Dialog] */-->
+<th:block th:replace="fragments/dialog :: dialog"/>
+</body>
+</html>

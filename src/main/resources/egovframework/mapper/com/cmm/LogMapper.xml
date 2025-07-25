@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="LogMapper">
+	<insert id="insert" parameterType="map">
+        INSERT INTO TN_MNGR_SRVC_LOG (
+               SRVC_URL_CN
+               , REG_USER_CD
+               , REG_USER_IP
+               , REG_DT
+        )
+        VALUES (
+               #{URI}
+               , #{SESSION_USER_CD}
+               , #{SESSION_USER_IP}
+               , NOW()
+        )
+	</insert>
+</mapper>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ButtonMapper">
+	<!-- 버튼리스트 -->
+	<select id="selectAuthBtnList" parameterType="map" resultType="map">
+	  SELECT B1.MENU_CD, B1.BTN_CD, IFNULL(B3.BTN_NM, B2.BTN_NM) AS BTN_NM, B3.SORT_SEQ
+	    FROM ( SELECT A1.MENU_CD, A1.BTN_CD
+	             FROM CM_ROLE_BTN A1
+                WHERE A1.ROLE_CD IN ( SELECT ROLE_CD
+	                                    FROM CM_USER_ROLE
+	                                   WHERE USER_CD = #{USER_CODE})
+	            GROUP BY A1.MENU_CD, A1.BTN_CD
+	       ) B1
+	   INNER JOIN CM_BTN B2
+	      ON (B1.BTN_CD = B2.BTN_CD)
+	   INNER JOIN CM_MENU_BTN B3
+	      ON (B1.MENU_CD = B3.MENU_CD AND B1.BTN_CD = B3.BTN_CD)
+	   WHERE B2.USE_YN = 'Y'
+	     AND B3.USE_YN = 'Y'
+	     AND B1.MENU_CD = #{MENU_CODE}
+	   ORDER BY B1.MENU_CD, B3.SORT_SEQ
+	</select>
+	
+</mapper>

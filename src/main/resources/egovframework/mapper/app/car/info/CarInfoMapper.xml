@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="CarInfoMapper">
+	
+	<!-- 제조사 콤보박스 조회 -->
+	<select id="selectCarMakerList" parameterType="map" resultType="map">
+        SELECT A1.MKR_CD 
+	         , CONCAT('(', CASE WHEN A1.DMPRD_YN = 'Y' THEN '국산' ELSE '수입' END,') ',A1.MKR_NM) AS MKR_NM
+	         , A2.ULD_FILE_NM
+	         , A2.FILE_EXTN_NM
+	         , A1.USE_YN
+	      FROM TN_CAR_MAKER A1
+	      LEFT JOIN CM_ATCH_FILE A2
+	        ON A1.ATCH_FILE_CD = A2.ATCH_FILE_CD
+	</select>
+	
+	<!-- 차종분류1 리스트 -->
+	<select id="selectCarN1KindList" resultType="map">
+        SELECT A1.CARMDL_CD
+             , A1.CARMDL_CLSF_NM
+	      FROM TN_CAR_KIND A1
+	     WHERE A1.CLSF_SE_CD = '1'
+	     ORDER BY SORT_SEQ
+	</select>
+	<!-- 차종분류2 리스트 -->
+	<select id="selectCarN2KindList" resultType="map">
+        SELECT A1.CARMDL_CD
+             , A1.CARMDL_CLSF_NM
+	      FROM TN_CAR_KIND A1
+	     WHERE A1.CLSF_SE_CD = '2'
+	     ORDER BY SORT_SEQ
+	</select>
+	<!-- 연료 리스트 -->
+	<select id="selectCarFuelList" parameterType="map" resultType="map">
+        SELECT A1.FUEL_CD 
+	         , A1.FUEL_NM
+	         , A1.USE_YN
+	      FROM TN_CAR_FUEL A1
+	     ORDER BY SORT_SEQ
+	</select>
+	<!-- 변속기분류 리스트 -->
+	<select id="selectCarTransList" parameterType="map" resultType="map">
+        SELECT A1.TRSM_CD
+	         , A1.TRSM_NM
+	         , A1.USE_YN
+	      FROM TN_CAR_TRSM A1
+	     ORDER BY SORT_SEQ
+	</select>
+
+	<!-- 자동차 모델 리스트 -->	
+	<select id="selectList" parameterType="map" resultType="map">
+      WITH CAR_MODEL_DATA AS (
+        SELECT A1.ATCH_FILE_CD
+		     , A1.CAR_MDL_CD
+		     , A1.CAR_MDL_ENG_NM
+		     , A1.CAR_MDL_NM
+		     , A1.CARMDL_1N_CD
+		     , A1.CARMDL_2N_CD
+		     , A1.FUEL_CD
+		     , A1.MKR_CD
+		     , A1.MNFTR_YR
+		     , A1.TEST_RSLT_RLS_YN
+		     , A1.TEST_YR
+		     , A1.TRSM_CD
+		     , A1.TRSM_TXT_NM
+		     , A2.MKR_NM
+		     , A3.FUEL_NM
+		     , A4.CARMDL_CLSF_NM AS CARMDL_1N_NM
+		     , A5.CARMDL_CLSF_NM AS CARMDL_2N_NM
+		     , A6.TRSM_NM
+		     , CASE 
+			   WHEN EXISTS (
+			     SELECT 1
+			       FROM TN_CAR_TEST_RSLT
+			      WHERE CAR_MDL_CD = A1.CAR_MDL_CD
+			   ) THEN 'Y'
+			   ELSE 'N' END AS TEST_YN
+		  FROM TN_CAR_MODEL A1
+		  LEFT OUTER JOIN TN_CAR_MAKER A2
+		  	ON A1.MKR_CD = A2.MKR_CD
+		  LEFT OUTER JOIN TN_CAR_FUEL A3
+		  	ON A1.FUEL_CD = A3.FUEL_CD
+		  LEFT OUTER JOIN TN_CAR_KIND A4
+		 	 ON A1.CARMDL_1N_CD = A4.CARMDL_CD
+		  LEFT OUTER JOIN TN_CAR_KIND A5
+		 	 ON A1.CARMDL_2N_CD = A5.CARMDL_CD
+		  LEFT OUTER JOIN TN_CAR_TRSM A6
+			  ON A1.TRSM_CD = A6.TRSM_CD
+		  LEFT OUTER JOIN CM_ATCH_FILE A7
+			  ON A1.ATCH_FILE_CD = A7.ATCH_FILE_CD
+		  <where>
+        	<if test='TEST_START_YR != null and TEST_START_YR != ""'>
+        	  A1.TEST_YR >= #{TEST_START_YR}
+        	</if>
+        	<if test='TEST_END_YR != null and TEST_END_YR != ""'>
+        	  AND A1.TEST_YR <![CDATA[<=]]> #{TEST_END_YR}
+        	</if>
+        	<if test='MNFTR_START_YR != null and MNFTR_START_YR != ""'>
+        	  AND A1.MNFTR_YR >= #{MNFTR_START_YR}
+        	</if>
+        	<if test='MNFTR_END_YR != null and MNFTR_END_YR != ""'>
+        	  AND A1.MNFTR_YR <![CDATA[<=]]> #{MNFTR_END_YR}
+        	</if>
+        	<if test='SEARCH_MKR_CD != null and SEARCH_MKR_CD != ""'>
+        	  AND A1.MKR_CD = #{SEARCH_MKR_CD}
+        	</if>
+        	<if test='SC_CARMDL_1N_CD != null and SC_CARMDL_1N_CD.size > 0'>
+                <foreach open = "AND A1.CARMDL_1N_CD IN (" close=")" collection="SC_CARMDL_1N_CD" item="item" separator=",">#{item}</foreach>
+            </if>
+            <if test='SC_CARMDL_2N_CD != null and SC_CARMDL_2N_CD.size > 0'>
+                <foreach open = "AND A1.CARMDL_2N_CD IN (" close=")" collection="SC_CARMDL_2N_CD" item="item" separator=",">#{item}</foreach>
+            </if>
+            <if test='SC_FUEL_CD != null and SC_FUEL_CD.size > 0'>
+                <foreach open = "AND A1.FUEL_CD IN (" close=")" collection="SC_FUEL_CD" item="item" separator=",">#{item}</foreach>
+            </if>
+            <if test='SC_TRSM_CD != null and SC_TRSM_CD.size > 0'>
+                <foreach open = "AND A1.TRSM_CD IN (" close=")" collection="SC_TRSM_CD" item="item" separator=",">#{item}</foreach>
+            </if>
+            <if test='SC_CAR_MDL_NM != null and SC_CAR_MDL_NM != ""'>
+              AND (INSTR(UPPER(A1.CAR_MDL_NM), UPPER(#{SC_CAR_MDL_NM})) > 0 OR INSTR(UPPER(A1.CAR_MDL_ENG_NM), UPPER(#{SC_CAR_MDL_NM})) > 0 )
+            </if>
+        </where>
+      )
+      SELECT * 
+        FROM CAR_MODEL_DATA
+       <where>
+         <if test='TEST_YN != null and TEST_YN.size > 0'>
+             <foreach open = "TEST_YN IN (" close=")" collection="TEST_YN" item="item" separator=",">#{item}</foreach>
+         </if>
+       </where>
+	</select>
+	
+	<select id="selectInfo" parameterType="map" resultType="map">
+        SELECT A1.ATCH_FILE_CD
+		     , A1.CAR_MDL_CD
+		     , A1.CAR_MDL_ENG_NM
+		     , A1.CAR_MDL_NM
+		     , A1.CARMDL_1N_CD
+		     , A1.CARMDL_2N_CD
+		     , A1.FUEL_CD
+		     , A1.MKR_CD
+		     , A1.MNFTR_YR
+		     , A1.TEST_RSLT_RLS_YN
+		     , A1.TEST_YR
+		     , A1.TRSM_CD
+		     , A1.TRSM_TXT_NM
+		     , A2.MKR_NM
+		     , A3.FUEL_NM
+		     , A4.CARMDL_CLSF_NM
+		     , A5.CARMDL_CLSF_NM
+		     , A6.TRSM_NM
+		     , A7.ULD_FILE_NM
+			 , A7.ULD_FILE_NM AS ORGNL_ULD_FILE_NM 
+		     , A7.FILE_SZ
+	         , A7.ORGNL_FILE_NM
+	         , A7.FILE_EXTN_NM
+	         , A7.WDTH_SZ
+	         , A7.VRTC_SZ
+		     , A8.USER_NM AS MDFCN_USER_NM
+         	 , DATE_FORMAT(A1.MDFCN_DT, '%Y-%m-%d') AS MDFCN_DT
+		  FROM TN_CAR_MODEL A1
+		  LEFT OUTER JOIN TN_CAR_MAKER A2
+		  	ON A1.MKR_CD = A2.MKR_CD
+		  LEFT OUTER JOIN TN_CAR_FUEL A3
+		  	ON A1.FUEL_CD = A3.FUEL_CD
+		  LEFT OUTER JOIN TN_CAR_KIND A4
+		 	ON A1.CARMDL_1N_CD = A4.CARMDL_CD
+		  LEFT OUTER JOIN TN_CAR_KIND A5
+		 	ON A1.CARMDL_2N_CD = A5.CARMDL_CD
+		  LEFT OUTER JOIN TN_CAR_TRSM A6
+			ON A1.TRSM_CD = A6.TRSM_CD
+		  LEFT OUTER JOIN CM_ATCH_FILE A7
+			ON A1.ATCH_FILE_CD = A7.ATCH_FILE_CD
+		  LEFT JOIN TN_USER A8
+	        ON A1.MDFCN_USER_CD = A8.USER_CD  
+		 WHERE A1.CAR_MDL_CD = #{CAR_MDL_CD}
+	</select>
+	
+	<insert id="merge" parameterType="map">
+        <selectKey resultType="String" keyProperty="CAR_MDL_CD" order="BEFORE">
+            SELECT IFNULL(#{CAR_MDL_CD}, FN_GET_KEYCODE())
+        </selectKey>
+        INSERT INTO TN_CAR_MODEL (
+               CAR_MDL_CD
+             , TEST_YR
+             , MKR_CD
+             , CAR_MDL_NM
+             , CAR_MDL_ENG_NM
+             , CARMDL_1N_CD
+             , CARMDL_2N_CD
+             , FUEL_CD
+             , MNFTR_YR
+             , TRSM_CD
+             , TRSM_TXT_NM
+             , ATCH_FILE_CD
+             , REG_USER_CD
+             , REG_USER_IP
+             , REG_DT
+             , MDFCN_USER_CD
+             , MDFCN_USER_IP
+             , MDFCN_DT
+        )
+        VALUES (
+               #{CAR_MDL_CD}
+             , #{TEST_YR}
+             , #{MKR_CD}
+             , #{CAR_MDL_NM}
+             , #{CAR_MDL_ENG_NM}
+             , #{CARMDL_1N_CD}
+             , #{CARMDL_2N_CD}
+             , #{FUEL_CD}
+             , #{MNFTR_YR}
+             , #{TRSM_CD}
+             , #{TRSM_TXT_NM}
+             , #{ATCH_FILE_CD}
+             , #{SESSION_USER_CD}
+             , #{SESSION_USER_IP}
+             , NOW()
+             , #{SESSION_USER_CD}
+             , #{SESSION_USER_IP}
+             , NOW()
+        )
+        ON DUPLICATE KEY UPDATE
+           TEST_YR = #{TEST_YR}
+         , MKR_CD = #{MKR_CD}
+         , CAR_MDL_NM = #{CAR_MDL_NM}
+         , CAR_MDL_ENG_NM = #{CAR_MDL_ENG_NM}
+         , CARMDL_1N_CD = #{CARMDL_1N_CD}
+         , CARMDL_2N_CD = #{CARMDL_2N_CD}
+         , FUEL_CD = #{FUEL_CD}
+         , MNFTR_YR = #{MNFTR_YR}
+         , TRSM_CD = #{TRSM_CD}
+         , TRSM_TXT_NM = #{TRSM_TXT_NM}
+         , ATCH_FILE_CD = #{ATCH_FILE_CD}
+         , MDFCN_USER_CD = #{SESSION_USER_CD}
+         , MDFCN_USER_IP = #{SESSION_USER_IP}
+         , MDFCN_DT = NOW()
+	</insert>
+	
+	<delete id="delete" parameterType="map">
+		DELETE FROM TN_CAR_MODEL 
+		WHERE CAR_MDL_CD = #{CAR_MDL_CD}
+	</delete>
+	
+	<select id="selectChkValid" parameterType="map" resultType="string">
+	    SELECT 
+		  CASE 
+		    WHEN EXISTS (
+		      SELECT 1
+		      FROM TN_CAR_MODEL
+		      WHERE TEST_YR = #{TEST_YR}
+		        AND MKR_CD = #{MKR_CD}
+		        AND REPLACE(CAR_MDL_NM, ' ', '') = REPLACE(#{CAR_MDL_NM}, ' ', '')
+		      <if test='CAR_MDL_CD != null and CAR_MDL_CD != ""'>
+		        AND CAR_MDL_CD != #{CAR_MDL_CD}
+		      </if>
+		    )
+		    THEN 'Y'
+		    ELSE 'N'
+		  END AS EXIST_YN
+	</select>
+	
+</mapper>

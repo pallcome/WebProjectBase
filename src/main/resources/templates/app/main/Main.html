@@ -1,0 +1,17 @@
+<th:block layout:decorate="~{${layoutName}}">
+<!-- 페이지 head(css) -->
+<th:block layout:fragment="pageHead">
+	<link rel="stylesheet" th:href="@{/css/member/main.css}">
+</th:block>
+
+<!-- 페이지 content(ui) -->
+<main layout:fragment="pageContent" class="content">
+	메인 페이지
+</main>
+
+<!-- 페이지 script -->
+<th:block layout:fragment="pageScript">
+	<script th:inline="javascript">
+	</script>
+</th:block>
+</th:block>

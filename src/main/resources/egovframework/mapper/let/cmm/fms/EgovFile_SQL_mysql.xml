@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="FileManageMapper">
+    <select id="selectFileList" parameterType="map" resultType="map">
+        SELECT ATCH_FILE_CD
+               , ULD_FILE_NM
+               , ULD_FILE_NM AS ORGNL_ULD_FILE_NM
+               , FILE_SZ
+               , ORGNL_FILE_NM
+               , FILE_EXPLN
+               , FILE_EXTN_NM
+               , WDTH_SZ
+               , VRTC_SZ
+          FROM CM_ATCH_FILE
+         WHERE ATCH_FILE_CD = #{ATCH_FILE_CD}
+    </select>
+    <insert id="insertFile" parameterType="map">
+        INSERT INTO CM_ATCH_FILE (
+               ATCH_FILE_CD
+               , ULD_FILE_NM
+               , FILE_SZ
+               , ORGNL_FILE_NM
+               , FILE_EXPLN
+               , FILE_EXTN_NM
+               , WDTH_SZ
+               , VRTC_SZ
+               , REG_USER_IP
+               , REG_DT
+               , MDFCN_USER_IP
+               , MDFCN_DT
+        )
+        VALUES (
+               #{ATCH_FILE_CD}
+               , #{ULD_FILE_NM}
+               , #{FILE_SZ}
+               , #{ORGNL_FILE_NM}
+               , #{FILE_EXPLN}
+               , #{FILE_EXTN_NM}
+               , #{WDTH_SZ}
+               , #{VRTC_SZ}
+               , #{SESSION_USER_IP}
+               , NOW()
+               , #{SESSION_USER_IP}
+               , NOW()
+        )
+    </insert>
+    <update id="updateFile" parameterType="map">
+        UPDATE CM_ATCH_FILE
+           SET ULD_FILE_NM = #{ULD_FILE_NM}
+               , FILE_SZ = #{FILE_SZ}
+               , ORGNL_FILE_NM = #{ORGNL_FILE_NM}
+               , FILE_EXPLN = #{FILE_EXPLN}
+               , FILE_EXTN_NM = #{FILE_EXTN_NM}
+               , WDTH_SZ = #{WDTH_SZ}
+               , VRTC_SZ = #{VRTC_SZ}
+               , REG_USER_IP = #{SESSION_USER_IP}
+               , REG_DT = NOW()
+               , MDFCN_USER_IP = #{SESSION_USER_IP}
+               , MDFCN_DT = NOW()
+         WHERE ATCH_FILE_CD = #{ATCH_FILE_CD}
+           AND ULD_FILE_NM = #{ORGNL_ULD_FILE_NM}
+    </update>
+    <update id="deleteFile" parameterType="map">
+        DELETE FROM CM_ATCH_FILE
+         WHERE ATCH_FILE_CD = #{ATCH_FILE_CD}
+           AND ULD_FILE_NM = #{ORGNL_ULD_FILE_NM}
+    </update>
+</mapper>

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="MenuMapper">
+	<!-- 권한 메뉴 트리 -->
+	<select id="selectMenuTree" parameterType="string" resultType="map">
+        WITH RECURSIVE MENU_TREE
+        AS(
+            -- 1단계: 권한이 있는 하위 메뉴 중에서 루트(UP_MENU_CD is null 또는 'ROOT')까지 타고 올라간 부모를 먼저 선별
+             SELECT DISTINCT A1.MENU_CD
+                             , A1.UP_MENU_CD
+                             , A1.MENU_URL_ADDR
+                             , A1.MENU_NM
+                             , A1.SORT_SEQ
+                             , A1.USE_YN
+                             , A1.MENU_ICON_NM
+                             , 1 AS LEVEL
+                             , A1.MENU_NM AS MENU_PATH
+                        FROM CM_MENU A1
+                  INNER JOIN(
+                             -- 하위에서부터 올라가는 권한 있는 메뉴들
+                             WITH RECURSIVE BASE_MENU AS(
+                                 SELECT A4.MENU_CD
+                                        , A4.UP_MENU_CD
+                                   FROM TN_USER_IP A1
+                             INNER JOIN CM_USER_ROLE A2
+                                     ON A1.USER_CD = A2.USER_CD
+                             INNER JOIN CM_ROLE_MENU A3
+                                     ON A2.ROLE_CD = A3.ROLE_CD
+                             INNER JOIN CM_MENU A4
+                                     ON A3.MENU_CD = A4.MENU_CD
+                                  WHERE A1.USER_IP = #{ip}
+                                    AND A4.USE_YN = 'Y'
+                                    AND A4.MENU_ATRB_NM <![CDATA[<>]]> 'P'
+                             
+                             UNION ALL
+                                 
+                                 SELECT M.MENU_CD
+                                        , M.UP_MENU_CD
+                                   FROM CM_MENU M
+                             INNER JOIN BASE_MENU B
+                                     ON M.MENU_CD = B.UP_MENU_CD
+                                  WHERE M.USE_YN = 'Y')
+                           SELECT DISTINCT MENU_CD
+                             FROM BASE_MENU) AS AUTH_MENU
+                          ON A1.MENU_CD = AUTH_MENU.MENU_CD
+                       WHERE A1.UP_MENU_CD IS NULL
+                          OR A1.UP_MENU_CD = ''
+             
+             UNION ALL
+             
+             -- 2단계: 자식들을 재귀적으로 탐색하며 메뉴 트리 구성
+                 SELECT C.MENU_CD
+                        , C.UP_MENU_CD
+                        , C.MENU_URL_ADDR
+                        , C.MENU_NM
+                        , C.SORT_SEQ
+                        , C.USE_YN
+                        , C.MENU_ICON_NM
+                        , P.LEVEL + 1 AS LEVEL
+                        , CONCAT_WS(' > ', P.MENU_PATH, C.MENU_NM) AS MENU_PATH
+                   FROM CM_MENU C
+             INNER JOIN MENU_TREE P
+                     ON C.UP_MENU_CD = P.MENU_CD
+                  WHERE C.USE_YN = 'Y')
+            SELECT DISTINCT A1.MENU_CD
+                   , IFNULL(A1.UP_MENU_CD, '') AS UP_MENU_CD
+                   , IFNULL(A1.MENU_URL_ADDR, '') AS MENU_URL_ADDR
+                   , IFNULL(A1.MENU_NM, '') AS MENU_NM
+                   , IFNULL(A1.SORT_SEQ, - 1) AS SORT_SEQ
+                   , IFNULL(A1.MENU_ICON_NM, '') AS MENU_ICON_NM
+                   , A1.LEVEL
+                   , A1.MENU_PATH
+              FROM MENU_TREE A1
+          ORDER BY A1.LEVEL
+                   , A1.SORT_SEQ
+	</select>
+	<!-- 권한 메뉴 목록 -->
+	<select id="selectMenuList" parameterType="string" resultType="map">
+          SELECT A4.MENU_CD
+                 , A4.MENU_URL_ADDR
+                 , A4.MENU_NM
+                 , A4.PAGE_URL_ADDR
+            FROM TN_USER_IP A1
+      INNER JOIN CM_USER_ROLE A2
+              ON A1.USER_CD = A2.USER_CD
+      INNER JOIN CM_ROLE_MENU A3
+              ON A2.ROLE_CD = A3.ROLE_CD
+      INNER JOIN CM_MENU A4
+              ON A3.MENU_CD = A4.MENU_CD
+           WHERE A1.USER_IP = #{ip}
+             AND A4.USE_YN = 'Y'
+             
+           UNION ALL
+          -- 모든사용자 기본 권한
+          SELECT 'MAIN', '/main', '메인', ''
+          UNION ALL SELECT 'ERROR', '/error', '오류', ''
+	</select>
+</mapper>

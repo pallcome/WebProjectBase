@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="CodeMapper">
+	<select id="selectList" parameterType="map" resultType="map">
+		SELECT *
+		  FROM (
+				SELECT 'C001' AS CLS_GROUP_CD, 'C001A001' AS CLS_CD, '공개' AS CLS_NM, 'Y' AS USE_YN FROM DUAL
+				UNION ALL SELECT 'C001' AS CLS_GROUP_CD, 'C001A002' AS CLS_CD, '미공개' AS CLS_NM, 'Y' AS USE_YN FROM DUAL
+				
+				UNION ALL SELECT 'C002' AS CLS_GROUP_CD, 'C002A001' AS CLS_CD, '국내' AS CLS_NM, 'Y' AS USE_YN FROM DUAL
+				UNION ALL SELECT 'C002' AS CLS_GROUP_CD, 'C002A002' AS CLS_CD, '수입' AS CLS_NM, 'Y' AS USE_YN FROM DUAL
+				
+				UNION ALL SELECT 'C003' AS CLS_GROUP_CD, 'C003A001' AS CLS_CD, '사용' AS CLS_NM, 'Y' AS USE_YN FROM DUAL
+				UNION ALL SELECT 'C003' AS CLS_GROUP_CD, 'C003A002' AS CLS_CD, '미사용' AS CLS_NM, 'Y' AS USE_YN FROM DUAL
+			   ) CODE_TB
+		 WHERE CLS_GROUP_CD = #{CLS_GROUP_CD}
+	</select>
+</mapper>

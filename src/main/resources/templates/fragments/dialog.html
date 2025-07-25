@@ -1,0 +1,49 @@
+<th:block th:fragment="dialog">
+<!--/* [유효성 검사 alert] */-->
+<div id="errorOverlay" class="toast-overlay d-none">
+	<div id="errorToast" class="toast custom-toast text-white" role="alert" aria-live="assertive" aria-atomic="true">
+		<div class="toast-header bg-opacity-75 text-white">
+			<strong class="me-auto"><i class="fas fa-exclamation-circle me-2"></i>알림</strong>
+			<button type="button" class="btn-close btn-close-white ms-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+		</div>
+		<div class="toast-body">
+			<div id="errorMsg"></div>
+			<div class="mt-2 pt-2 border-top">
+				<button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="toast">닫기</button>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/template" id="error-template">
+<% _.forEach(validList, function(valid) { %>
+	<div class="toast-group">
+		<div class="toast-title"><%= valid.title %></div>
+		<dl class="toast-list">
+			<% _.forEach(valid.errors, function(err) { %>
+				<dt onclick="$(`<%-err.target%>`).focus();" data-bs-dismiss="toast"><%= err.label %></dt>
+				<% _.forEach(err.message, function(msg) { %>
+					<dd><%= msg %></dd>
+				<% }); %>
+			<% }); %>
+		</dl>
+	</div>
+<% }); %>
+</script>
+
+<!--/* [확인 alert] */-->
+<div id="alertOverlay" class="toast-overlay d-none">
+	<div id="alertToast" class="toast custom-toast text-white" role="alert" aria-live="assertive" aria-atomic="true">
+		<div class="toast-header bg-opacity-75 text-white">
+			<strong class="me-auto" id="alertHead"><i class="fas fa-exclamation-circle me-2"></i>알림</strong>
+			<button type="button" class="btn-close btn-close-white ms-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+		</div>
+		<div class="toast-body">
+			<p class="toast-txt" id="alertMsg"></p>
+			<div class="mt-2 pt-2 border-top d-flex justify-content-between">
+				<button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="toast">닫기</button>
+				<button type="button" class="btn btn-primary btn-sm d-none" id="alertBtnConfirm">확인</button>
+			</div>
+		</div>
+	</div>
+</div>
+</th:block>

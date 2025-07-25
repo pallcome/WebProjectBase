@@ -1,0 +1,38 @@
+<div th:fragment="script">
+	<!--/* appstack */-->
+	<script th:src="@{/plugin/appstack-4-0-0/dist/js/app.js}"></script>
+	<!--/* air-datepicker-3 */-->
+	<script th:src="@{/plugin/air-datepicker-3/dist/air-datepicker.js}"></script>
+	<!--/* Datatables Buttons 플러그인 */-->
+	<script th:src="@{/plugin/datatables/buttons_2.4.2.html5.min.js}"></script>
+	<!--/* 엑셀 다운로드 */-->
+	<script th:src="@{/plugin/jszip/jszip_3.10.1.min.js}"></script>
+	<!--/* lodash */-->
+	<script th:src="@{/plugin/lodash/lodash.4.17.15.js}"></script>
+	<!--/* JqueryTree */-->
+	<script th:src="@{/plugin/JQueryzTreev3.5.15/js/jquery.ztree.all-3.5.min.js}"></script>
+	<!--/* RobinHerbots-Inputmask */-->
+	<script th:src="@{/plugin/RobinHerbots-Inputmask/dist/inputmask.min.js}"></script>
+	<script th:src="@{/plugin/RobinHerbots-Inputmask/dist/jquery.inputmask.min.js}"></script>
+	<script th:src="@{/plugin/RobinHerbots-Inputmask/dist/bindings/inputmask.binding.js}"></script>
+	
+	<script th:inline="javascript">
+		window.cmmVO = [[${cmmVO}]]; // Js에서 사용하기 위한 공통변수
+		
+		// 아코디언 열렸을 때(상세필터)
+		$(".accordion-collapse").on('shown.bs.collapse', function() {
+			$(".coll-txt").text('접기');
+			$(".accordion-button i").removeClass('fa-plus').addClass('fa-minus');
+		});
+		// 아코디언 닫혔을 때(상세필터)
+		$(".accordion-collapse").on('hidden.bs.collapse', function () {
+			$(".coll-txt").text('펼치기');
+			$(".accordion-button i").removeClass('fa-minus').addClass('fa-plus');
+		});
+	</script>
+	
+	<!--/* 공통 */-->
+	<script th:src="@{/js/CommonJs.js}"></script>
+	<script th:src="@{/js/DataTableJs.js}"></script>
+	<script th:src="@{/js/PopupJs.js}"></script>
+</div>

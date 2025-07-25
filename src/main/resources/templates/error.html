@@ -1,0 +1,15 @@
+<th:block layout:decorate="~{layout/errorLayout}">
+<!-- 페이지 content(ui) -->
+<main layout:fragment="pageContent" class="content">
+	<div class="text-center">
+		<h1 class="display-1 fw-bold"><i class="fa-solid fa-triangle-exclamation"></i></h1>
+		<p class="h2">Internal server error.</p>
+		<p class="lead fw-normal mt-3 mb-4">The server encountered something unexpected that didn't allow it to complete the request.</p>
+	</div>
+</main>
+<!-- 페이지 script -->
+<th:block layout:fragment="pageScript">
+	<script th:inline="javascript">
+	</script>
+</th:block>
+</th:block>

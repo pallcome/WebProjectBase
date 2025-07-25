@@ -1,0 +1,15 @@
+<th:block th:fragment="menu">
+	<ul class="sidebar-nav">
+		<li th:each="menu, state : ${cmmMenuList}" th:with="parentActiveFlag=${cmmVO.CURRENT_URI.indexOf(menu.MENU_URL_ADDR) > -1}" class="sidebar-item">
+			<a th:data-bs-target="${'#menu' + state.count}" th:classappend="${parentActiveFlag ? '' : ' collapsed'}" data-bs-toggle="collapse" class="sidebar-link">
+				<i th:class="@{${menu.MENU_ICON_NM}}"></i>
+				<span th:text="${menu.MENU_NM}"class="align-middle"></span>
+			</a>
+			<ul th:id="${'menu' + state.count}" th:classappend="${parentActiveFlag ? ' show' : ''}" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+				<li th:each="child : ${menu.childList}" th:with="childActiveFlag=${cmmVO.CURRENT_URI.endsWith(child.MENU_URL_ADDR)}" th:classappend="${childActiveFlag ? ' active' : ''}"  class="sidebar-item">
+					<a th:href="@{${child.MENU_URL_ADDR}}" th:text="${child.MENU_NM}"class="sidebar-link"></a>
+				</li>
+			</ul>
+		</li>
+	</ul>
+</th:block>

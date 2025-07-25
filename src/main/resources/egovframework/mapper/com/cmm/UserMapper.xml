@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="UserMapper">
+	<resultMap id="sessionVO" type="egovframework.com.cmm.SessionVO">
+		<result property="userCd" column="USER_CD"/>
+		<result property="userId" column="USER_ID"/>
+		<result property="userNm" column="USER_NM"/>
+	</resultMap>
+	<!-- 사용자 정보 조회 -->
+	<select id="selectUserInfo" parameterType="string" resultMap="sessionVO">
+        SELECT A2.USER_CD
+               , A2.USER_ID
+               , A2.USER_NM
+          FROM TN_USER_IP A1
+         INNER JOIN TN_USER A2
+            ON A1.USER_CD = A2.USER_CD
+         WHERE A1.USER_IP = #{ip}
+	</select>
+</mapper>

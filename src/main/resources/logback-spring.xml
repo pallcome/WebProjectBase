@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true">
+
+	<!-- application.properties 에 선언된 값을 가져옵니다 -->
+	<property resource="application.properties" />
+	<property name="LOG_PATH" value="${logging.file.path}" />
+	<property name="LOG_FILE_NAME" value="${logging.file.name}" />
+	<property name="LOG_PATTERN" value="%d{HH:mm} %-5level [%logger] %msg%n" />
+	<property name="LOG_LEVEL" value="${logging.root.level}" />
+	<!-- SQL 전용 레벨: application.properties 에 logging.level.sql 로 지정 -->
+	<property name="SQL_LEVEL" value="${logging.level.sql}" />
+
+	<!-- 콘솔 Appender -->
+	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>${LOG_PATTERN}</pattern>
+		</encoder>
+	</appender>
+
+	<!-- 일반 로그 파일 Appender (dev,prod 프로필) -->
+	<springProfile name="dev,prod">
+		<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+			<file>${LOG_PATH}/${LOG_FILE_NAME}.log</file>
+			<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+				<fileNamePattern>${LOG_PATH}/${LOG_FILE_NAME}.%d{yyyy-MM-dd}.log</fileNamePattern>
+				<maxHistory>${logging.rollingpolicy.maxHistory}</maxHistory>
+			</rollingPolicy>
+			<encoder>
+				<pattern>${LOG_PATTERN}</pattern>
+			</encoder>
+		</appender>
+	</springProfile>
+
+	<!-- 전체 로그 레벨 설정 -->
+	<root level="${LOG_LEVEL}">
+		<appender-ref ref="CONSOLE" />
+		<springProfile name="dev,prod">
+			<appender-ref ref="FILE" />
+		</springProfile>
+	</root>
+
+	<!-- SQL 전용: SqlLogger 이름 하나만 INFO 로 켜기 -->
+	<logger name="SqlLogger" level="${SQL_LEVEL}" additivity="false">
+		<appender-ref ref="CONSOLE" />
+	</logger>
+</configuration>

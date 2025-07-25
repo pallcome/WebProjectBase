@@ -1,0 +1,42 @@
+<!--/* [1] CSS 조각 (head에서 사용) */-->
+<th:block th:fragment="headInfo">
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="description" content="Responsive Bootstrap 5 WebProjectBase">
+	<meta name="author" content="Bootlab">
+	
+	<link rel="shortcut icon" th:href="@{/img/favicon.ico}">
+	
+	<title>WebProjectBase</title>
+</th:block>
+
+<!--/* [1] CSS 조각 (head에서 사용) */-->
+<th:block th:fragment="css">
+	<!--/* font */-->
+	<link rel="stylesheet" th:href="@{/css/font.css}">
+	<!--/* appstack */-->
+	<link rel="stylesheet" th:href="@{/plugin/appstack-4-0-0/dist/css/app.css}">
+	<!--/* air-datepicker-3 */-->
+	<link rel="stylesheet" th:href="@{/plugin/air-datepicker-3/dist/air-datepicker.css}">
+	<!--/* JQueryzTree */-->
+	<link rel="stylesheet" th:href="@{/plugin/JQueryzTreev3.5.15/css/zTreeStyle/zTreeStyle.css}">
+	<!--/* custom */-->
+	<link rel="stylesheet" th:href="@{/css/custom-style.css}">
+</th:block>
+
+<!--/* [2] 메뉴/헤더 조각 (body에서 사용) */-->
+<th:block th:fragment="side">
+	<!--/* s : sidebar */-->
+	<nav id="sidebar" class="sidebar">
+		<div class="sidebar-content js-simplebar">
+			<a class="sidebar-brand" th:href="@{/main}">
+				<img th:src="@{/img/logo.png}" alt="WebProjectBase 관리자시스템">
+			</a>
+			<!--/* s : 메뉴 */-->
+			<th:block th:replace="fragments/menu :: menu"/>
+			<!--/* e : 메뉴 */-->
+		</div>
+	</nav>
+	<!--/* e : sidebar */-->
+</th:block>

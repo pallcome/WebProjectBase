@@ -1,0 +1,15 @@
+<th:block layout:decorate="~{layout/errorLayout}">
+<!-- 페이지 content(ui) -->
+<main layout:fragment="pageContent" class="content">
+	<div class="text-center">
+		<h1 class="display-1 fw-bold"><i class="fa-solid fa-triangle-exclamation"></i></h1>
+		<p class="h2">Access denied.</p>
+		<p class="lead fw-normal mt-3 mb-4">You don't have permission to access this resource. Please contact the administrator if you believe this is an error.</p>
+	</div>
+</main>
+<!-- 페이지 script -->
+<th:block layout:fragment="pageScript">
+	<script th:inline="javascript">
+	</script>
+</th:block>
+</th:block>

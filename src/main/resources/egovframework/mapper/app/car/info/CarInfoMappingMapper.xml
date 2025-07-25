@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="CarInfoMappingMapper">
+	
+	<!-- 트리리스트 -->
+	<select id="selectTreeList" parameterType="map" resultType="map">
+		SELECT T.ID, T.PID, T.NM, T.TREE_LEVLE
+		  FROM (
+		    SELECT 
+		      CAR_MDL_GROUP_CD AS ID, 
+		      NULL AS PID, 
+		      CAR_MDL_GROUP_NM AS NM 
+		      , 1 AS TREE_LEVLE
+		    FROM TN_CAR_MODEL_GROUP
+		    UNION ALL
+		    SELECT 
+		      A1.CAR_MDL_CD AS ID, 
+		      A1.CAR_MDL_GROUP_CD AS PID, 
+		      A2.CAR_MDL_NM
+		      , 2 AS TREE_LEVLE 
+		    FROM TN_CAR_MODEL_MPNG A1
+		    JOIN TN_CAR_MODEL A2 ON A1.CAR_MDL_CD = A2.CAR_MDL_CD
+		  ) AS T
+		ORDER BY T.PID IS NOT NULL, T.ID
+	</select>
+	
+	<!-- 인포 조회 -->
+	<select id="selectInfo" parameterType="map" resultType="map">
+		SELECT A1.CAR_MDL_GROUP_CD, A1.CAR_MDL_GROUP_NM
+		     , A2.USER_NM AS MDFCN_USER_NM
+             , DATE_FORMAT(A1.MDFCN_DT, '%Y-%m-%d') AS MDFCN_DT 
+		  FROM TN_CAR_MODEL_GROUP A1
+		  LEFT JOIN TN_USER A2
+	        ON A1.MDFCN_USER_CD = A2.USER_CD  
+		 WHERE CAR_MDL_GROUP_CD = #{CAR_MDL_GROUP_CD}
+	</select>
+	
+	<!-- 자동차 모델 리스트 -->	
+	<select id="selectList" parameterType="map" resultType="map">
+        SELECT A1.CAR_MDL_GROUP_CD
+		     , A2.CAR_MDL_CD
+		     , A2.RPRS_YN
+		     , A3.TEST_YR
+		     , A3.MNFTR_YR
+		     , A4.MKR_NM
+		     , A3.CAR_MDL_NM
+		     , A5.CARMDL_CLSF_NM AS CARMDL_1N_NM 
+		     , A6.CARMDL_CLSF_NM AS CARMDL_2N_NM
+		     , A7.TRSM_NM
+		     , A8.FUEL_NM
+		  FROM TN_CAR_MODEL_GROUP A1
+		  JOIN TN_CAR_MODEL_MPNG A2 
+		    ON A1.CAR_MDL_GROUP_CD = A2.CAR_MDL_GROUP_CD
+		  JOIN TN_CAR_MODEL A3 
+		    ON A2.CAR_MDL_CD = A3.CAR_MDL_CD
+		 LEFT JOIN TN_CAR_MAKER A4  
+		    ON A3.MKR_CD = A4.MKR_CD
+		 LEFT JOIN TN_CAR_KIND A5
+		    ON A3.CARMDL_1N_CD = A5.CARMDL_CD
+		 LEFT JOIN TN_CAR_KIND A6
+		    ON A3.CARMDL_2N_CD = A6.CARMDL_CD
+		 LEFT JOIN TN_CAR_TRSM A7
+		    ON A3.TRSM_CD = A7.TRSM_CD
+		 LEFT JOIN TN_CAR_FUEL A8
+		    ON A3.FUEL_CD = A8.FUEL_CD
+		WHERE A1.CAR_MDL_GROUP_CD = #{CAR_MDL_GROUP_CD}
+	</select>
+	
+	<insert id="mergeGroup" parameterType="map">
+        <selectKey resultType="String" keyProperty="CAR_MDL_GROUP_CD" order="BEFORE">
+            SELECT IFNULL(#{CAR_MDL_GROUP_CD}, FN_GET_KEYCODE())
+        </selectKey>
+        INSERT INTO TN_CAR_MODEL_GROUP (
+               CAR_MDL_GROUP_CD
+             , CAR_MDL_GROUP_NM
+             , REG_USER_CD
+             , REG_USER_IP
+             , REG_DT
+             , MDFCN_USER_CD
+             , MDFCN_USER_IP
+             , MDFCN_DT
+        )
+        VALUES (
+               #{CAR_MDL_GROUP_CD}
+             , #{CAR_MDL_GROUP_NM}
+             , #{SESSION_USER_CD}
+             , #{SESSION_USER_IP}
+             , NOW()
+             , #{SESSION_USER_CD}
+             , #{SESSION_USER_IP}
+             , NOW()
+        )
+        ON DUPLICATE KEY UPDATE
+           CAR_MDL_GROUP_NM = #{CAR_MDL_GROUP_NM}
+         , MDFCN_USER_CD = #{SESSION_USER_CD}
+         , MDFCN_USER_IP = #{SESSION_USER_IP}
+         , MDFCN_DT = NOW()
+	</insert>
+	
+	<insert id="mergeMpng" parameterType="map">
+        INSERT INTO TN_CAR_MODEL_MPNG (
+               CAR_MDL_GROUP_CD
+             , CAR_MDL_CD
+             , RPRS_YN
+             , REG_USER_CD
+             , REG_USER_IP
+             , REG_DT
+             , MDFCN_USER_CD
+             , MDFCN_USER_IP
+             , MDFCN_DT
+        )
+        VALUES (
+               #{CAR_MDL_GROUP_CD}
+             , #{CAR_MDL_CD}
+             , #{RPRS_YN}
+             , #{SESSION_USER_CD}
+             , #{SESSION_USER_IP}
+             , NOW()
+             , #{SESSION_USER_CD}
+             , #{SESSION_USER_IP}
+             , NOW()
+        )
+        ON DUPLICATE KEY UPDATE
+           RPRS_YN = #{RPRS_YN}
+         , MDFCN_USER_CD = #{SESSION_USER_CD}
+         , MDFCN_USER_IP = #{SESSION_USER_IP}
+         , MDFCN_DT = NOW()
+	</insert>
+	
+	<delete id="deleteMpng" parameterType="map">
+		DELETE FROM TN_CAR_MODEL_MPNG 
+		WHERE CAR_MDL_GROUP_CD = #{CAR_MDL_GROUP_CD}
+		  AND CAR_MDL_CD = #{CAR_MDL_CD}
+	</delete>
+	
+	<delete id="delete" parameterType="map">
+		DELETE FROM TN_CAR_MODEL_GROUP 
+		WHERE CAR_MDL_GROUP_CD = #{CAR_MDL_GROUP_CD}
+	</delete>
+	
+	<delete id="deleteMpngAll" parameterType="map">
+		DELETE FROM TN_CAR_MODEL_MPNG
+		WHERE CAR_MDL_GROUP_CD = #{CAR_MDL_GROUP_CD}
+	</delete>
+	
+</mapper>
